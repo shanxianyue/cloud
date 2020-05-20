@@ -19,7 +19,8 @@ public class ItemService {
     private OrderProperties orderProperties;
 
     public Item queryItemById(Long id) {
-        return this.restTemplate.getForObject(orderProperties.getItem().getUrl()
-                + id, Item.class);
+        // 该方法走eureka注册中心调用(去注册中心根据app-item查找服务，这种方式必须先开启负载均衡@LoadBalanced)
+        String itemUrl = "http://app-item/item/{id}";
+        return this.restTemplate.getForObject(itemUrl, Item.class, id);
     }
 }
